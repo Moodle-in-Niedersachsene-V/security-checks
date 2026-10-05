@@ -1,0 +1,865 @@
+{
+  "checked_at": "2026-10-05",
+  "scope": "15 öffentliche über GitHub-Suche erreichbare Vereinsrepositories; keine Behauptung über private oder lokale Projekte",
+  "method": "Rekursiver Default-Branch-Dateibaum, alle GitHub-Workflows, version.php, maximal fünf jüngste main-Workflow-Läufe; kein vollständiges Codeaudit und keine Testausführung",
+  "repositories": [
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_nextcloudbackup",
+      "commit": "63a0ca9589e03161e1d587cdb677f5c42b40dccb",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "63a0ca9589e03161e1d587cdb677f5c42b40dccb",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_nextcloudbackup/actions/runs/31788369855",
+          "created_at": "2026-08-14T09:30:36Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_kursfilter",
+      "commit": "ad60a3222fededea6aaad01724266aea728e49ba",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache",
+        "moodle-plugin-ci grunt --max-lint-warnings 0"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "ad60a3222fededea6aaad01724266aea728e49ba",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_kursfilter/actions/runs/33967457314",
+          "created_at": "2026-09-05T12:56:22Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "01c4da35109a1f6642af4e71e9b8f2f2aad5a6c0",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_kursfilter/actions/runs/33966954225",
+          "created_at": "2026-09-05T12:45:38Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "0bdba73310c090c752c36a015eacd253cc27b420",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_kursfilter/actions/runs/33966447879",
+          "created_at": "2026-09-05T12:34:57Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "6dc64addd046587861f8a88853dc9678f82ee961",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_kursfilter/actions/runs/33956652576",
+          "created_at": "2026-09-05T08:57:08Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "8bce73b346a734174574db528b1c896909647017",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_kursfilter/actions/runs/33956066538",
+          "created_at": "2026-09-05T08:43:58Z"
+        }
+      ],
+      "requires": "2025041400"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_easyadmin",
+      "commit": "492cabe8eeb23d755cb16c2e417f74bbdfe790be",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "492cabe8eeb23d755cb16c2e417f74bbdfe790be",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_easyadmin/actions/runs/37131335282",
+          "created_at": "2026-10-03T14:54:49Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "492cabe8eeb23d755cb16c2e417f74bbdfe790be",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_easyadmin/actions/runs/37131334046",
+          "created_at": "2026-10-03T14:54:48Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "31eb19831143f1d9ad5829c7586a4c724c7bdea2",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_easyadmin/actions/runs/31891252144",
+          "created_at": "2026-08-15T14:55:17Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "bad8452b01445e35979eb73631aa5180130a33e4",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_easyadmin/actions/runs/31885744377",
+          "created_at": "2026-08-15T12:53:13Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "0655916ff97eedd4523e7fc84b3f649cb20eeb2f",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_easyadmin/actions/runs/31883796369",
+          "created_at": "2026-08-15T12:07:25Z"
+        }
+      ],
+      "requires": "2025041400"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/moodle_dashboard",
+      "commit": "77958c7329bab933c4dc0db47f595fa0daf54a60",
+      "branch": "main",
+      "kind": "externes Python-Web-Dashboard",
+      "workflow_paths": [],
+      "ci_commands": [],
+      "database_images": [],
+      "moodle_branches": [],
+      "test_files": [],
+      "privacy_files": [],
+      "latest_visible_runs": [],
+      "requires": null
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_calendarcategories",
+      "commit": "12879fd026de328f08f82ea2796f9b4678a3797a",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "12879fd026de328f08f82ea2796f9b4678a3797a",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_calendarcategories/actions/runs/34211407378",
+          "created_at": "2026-09-08T09:41:41Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "df1040049bf4f598c1ff18b56beda3179fc89b65",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_calendarcategories/actions/runs/34209703746",
+          "created_at": "2026-09-08T09:23:14Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "93d8837534a3f4b578cbe04fa302cfcbceb7f555",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_calendarcategories/actions/runs/31383930787",
+          "created_at": "2026-08-10T11:32:07Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cd7f97573ed738182beff894eb0dbc3232c52f29",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_calendarcategories/actions/runs/31382111645",
+          "created_at": "2026-08-10T11:07:24Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "cf5fc6746c7068e6de2c75c9ab434fbbe428356f",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_calendarcategories/actions/runs/31363845991",
+          "created_at": "2026-08-10T06:55:59Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/mod_videolearn",
+      "commit": "c178113909d8abe09c127cb6c5dc114aa10272a6",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml",
+        ".github/workflows/moodle-security.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache",
+        "moodle-plugin-ci grunt --max-lint-warnings 0"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Security Check",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "c178113909d8abe09c127cb6c5dc114aa10272a6",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/mod_videolearn/actions/runs/33426232228",
+          "created_at": "2026-08-31T18:39:30Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "c178113909d8abe09c127cb6c5dc114aa10272a6",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/mod_videolearn/actions/runs/33426232087",
+          "created_at": "2026-08-31T18:39:30Z"
+        },
+        {
+          "name": "Moodle Security Check",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "411b01757f2e1ec7be8544e7018e625e2c820bbc",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/mod_videolearn/actions/runs/33425564225",
+          "created_at": "2026-08-31T18:32:16Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "411b01757f2e1ec7be8544e7018e625e2c820bbc",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/mod_videolearn/actions/runs/33425564279",
+          "created_at": "2026-08-31T18:32:16Z"
+        },
+        {
+          "name": "Moodle Security Check",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "00e824db17f56b8f869d2b89045d7da6ebfc49a0",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/mod_videolearn/actions/runs/33424892811",
+          "created_at": "2026-08-31T18:25:11Z"
+        }
+      ],
+      "requires": "2024100700"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_peertubeupload",
+      "commit": "ff10053f8299ce08f0602d42c3427b75600847d9",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache",
+        "moodle-plugin-ci grunt --max-lint-warnings 0",
+        "moodle-plugin-ci phpunit"
+      ],
+      "database_images": [
+        "postgres:14",
+        "mariadb:10.6"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "ff10053f8299ce08f0602d42c3427b75600847d9",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_peertubeupload/actions/runs/31090588450",
+          "created_at": "2026-08-06T09:47:42Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "c31a6dbd543face82ae736f6fd2093d0d4a9516a",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_peertubeupload/actions/runs/31087519087",
+          "created_at": "2026-08-06T09:04:08Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "d4af606b65be275a92be393aaf9ef6e994f0f04c",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_peertubeupload/actions/runs/31086490347",
+          "created_at": "2026-08-06T08:49:36Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "cbfc59a02f391dd18a9b6a71a46f32ba5a44b465",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_peertubeupload/actions/runs/31085883398",
+          "created_at": "2026-08-06T08:40:42Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_plugininfo",
+      "commit": "c785a842c6c280e9a95d12f43a8d6d1eafef97dd",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [],
+      "ci_commands": [],
+      "database_images": [],
+      "moodle_branches": [],
+      "test_files": [],
+      "privacy_files": [],
+      "latest_visible_runs": [],
+      "requires": "2024042200"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/tiny_textgestaltung",
+      "commit": "7ade60983a2401b84ccfa42d0ecea865b5b00484",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci grunt --max-lint-warnings 0"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "7ade60983a2401b84ccfa42d0ecea865b5b00484",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/tiny_textgestaltung/actions/runs/30910309387",
+          "created_at": "2026-08-04T12:42:45Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "81307912f043118a4c9079a13df4b89e993cf492",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/tiny_textgestaltung/actions/runs/30908129646",
+          "created_at": "2026-08-04T12:13:16Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "b5cd32a99b2c17dedd59cadcaf6afcaa5cc87aab",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/tiny_textgestaltung/actions/runs/30907979603",
+          "created_at": "2026-08-04T12:11:11Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "351bcb9d67f4f38b563530864cc76d8f67dfd882",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/tiny_textgestaltung/actions/runs/30894328318",
+          "created_at": "2026-08-04T08:59:36Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "0d51562bf19aaf2ed05e4ceb3e81d619a9265613",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/tiny_textgestaltung/actions/runs/30892341447",
+          "created_at": "2026-08-04T08:31:53Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/repository_peertubeoauth",
+      "commit": "20f2dff51bba3fc67414c275df02fc01eb3d065a",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache",
+        "moodle-plugin-ci grunt --max-lint-warnings 0",
+        "moodle-plugin-ci phpunit --fail-on-warning",
+        "moodle-plugin-ci behat --profile chrome"
+      ],
+      "database_images": [
+        "postgres:14",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "20f2dff51bba3fc67414c275df02fc01eb3d065a",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_peertubeoauth/actions/runs/36425013687",
+          "created_at": "2026-09-28T12:55:42Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "b911ffb2c3991e25a951968a70720183f5bd2576",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_peertubeoauth/actions/runs/36424378762",
+          "created_at": "2026-09-28T12:50:03Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "99035747a6dd199e614e56db0fce25f47292a41d",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_peertubeoauth/actions/runs/36422791663",
+          "created_at": "2026-09-28T12:35:20Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "4e3f245fff2c57ab88af141d416aa286eab6d13c",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_peertubeoauth/actions/runs/31082290349",
+          "created_at": "2026-08-06T07:47:43Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "809d653c7b7e516781e34e488ef4db52f21217e5",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_peertubeoauth/actions/runs/31020639641",
+          "created_at": "2026-08-05T15:30:27Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_mrbs_nds",
+      "commit": "5176bb5fdbef96eee4fbc332725b496564d36990",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [],
+      "ci_commands": [],
+      "database_images": [],
+      "moodle_branches": [],
+      "test_files": [],
+      "privacy_files": [
+        "block_mrbs_nds/classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [],
+      "requires": "2024100700"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_emailclient",
+      "commit": "4f34510313b760c7fa6c175995d8f5da0a00b75f",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci mustache",
+        "moodle-plugin-ci grunt --max-lint-warnings 0",
+        "moodle-plugin-ci phpunit --fail-on-warning",
+        "moodle-plugin-ci behat --profile chrome"
+      ],
+      "database_images": [
+        "postgres:14",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "4f34510313b760c7fa6c175995d8f5da0a00b75f",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_emailclient/actions/runs/31153428797",
+          "created_at": "2026-08-07T06:17:30Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "65d41a6b640b324ba2bd3567fc928549f3fa9465",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_emailclient/actions/runs/31152855416",
+          "created_at": "2026-08-07T06:07:18Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "a644a9a026b45b0ce29ef382569ebc944b15077e",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_emailclient/actions/runs/31150596460",
+          "created_at": "2026-08-07T05:26:31Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_questionfilter",
+      "commit": "a7bcf379868cda395b85ab6176f97009f492ed9f",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci grunt --max-lint-warnings 0"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "0f55d4b540bdc9bb8bb475c05956fb821986397d",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_questionfilter/actions/runs/34448070603",
+          "created_at": "2026-09-10T07:03:25Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "bde2ef8b9ac1f128c9516d866ee35dbdb7503e4a",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_questionfilter/actions/runs/34447206792",
+          "created_at": "2026-09-10T06:52:33Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "bca2354eee0e92148e73157207493887fa3ce580",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_questionfilter/actions/runs/34446781746",
+          "created_at": "2026-09-10T06:47:05Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "3b067a5173086a6a83f1dbb493a13e8ebed17da7",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_questionfilter/actions/runs/34445835558",
+          "created_at": "2026-09-10T06:34:47Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "66e0b3694e5d530de167578377691e9354f7e98a",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/block_questionfilter/actions/runs/34443206594",
+          "created_at": "2026-09-10T05:58:22Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/repository_nextclouddirect",
+      "commit": "2fd672b6e29b4d68a670bc271bdbdae78429f751",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "2fd672b6e29b4d68a670bc271bdbdae78429f751",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_nextclouddirect/actions/runs/31796451622",
+          "created_at": "2026-08-14T11:29:58Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "352840356a1c651402c454281ef1e76dc8276499",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/repository_nextclouddirect/actions/runs/31795775616",
+          "created_at": "2026-08-14T11:19:54Z"
+        }
+      ],
+      "requires": "2025100600"
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_kursassistent",
+      "commit": "61300a399d8ba2462db1ea8cbaf9cfe8d4132529",
+      "branch": "main",
+      "kind": "Moodle-Plugin",
+      "workflow_paths": [
+        ".github/workflows/moodle-ci.yml"
+      ],
+      "ci_commands": [
+        "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
+        "moodle-plugin-ci phplint",
+        "moodle-plugin-ci phpmd",
+        "moodle-plugin-ci phpcs --max-warnings 0",
+        "moodle-plugin-ci phpdoc --max-warnings 0",
+        "moodle-plugin-ci validate",
+        "moodle-plugin-ci savepoints",
+        "moodle-plugin-ci grunt --max-lint-warnings 0"
+      ],
+      "database_images": [
+        "postgres:16",
+        "mariadb:10.11"
+      ],
+      "moodle_branches": [
+        "MOODLE_501_STABLE",
+        "MOODLE_502_STABLE"
+      ],
+      "test_files": [],
+      "privacy_files": [
+        "classes/privacy/provider.php"
+      ],
+      "latest_visible_runs": [
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "e2de4a6f330f5b0ab3521c9e54a275ba23d45305",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_kursassistent/actions/runs/36387574356",
+          "created_at": "2026-09-28T06:39:43Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "2f13b86c7e6208b719234d057b02382ff70671e9",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_kursassistent/actions/runs/35870889274",
+          "created_at": "2026-09-23T13:59:08Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "0d6b20ee8bd6f22ec797b9767d6ea440d979a420",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_kursassistent/actions/runs/35858005293",
+          "created_at": "2026-09-23T12:02:11Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "success",
+          "head_sha": "9c649563f09653146b1f338d963ce179eb3d4370",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_kursassistent/actions/runs/33845901945",
+          "created_at": "2026-09-04T06:48:23Z"
+        },
+        {
+          "name": "Moodle Plugin CI",
+          "status": "completed",
+          "conclusion": "failure",
+          "head_sha": "4c04797c31e6f13b23bed77e3ccfe45661e14cf2",
+          "url": "https://github.com/Moodle-in-Niedersachsene-V/local_kursassistent/actions/runs/33844002640",
+          "created_at": "2026-09-04T06:21:09Z"
+        }
+      ],
+      "requires": "2025041400"
+    }
+  ]
+}

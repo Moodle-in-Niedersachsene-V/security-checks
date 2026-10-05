@@ -14,6 +14,7 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 | [Bayerische Referenzen](docs/research/bayern-checks.md) | Gesamttabelle aller öffentlichen ByCS-Projekte; vertiefter Blick auf KI-Manager und AI-Chat |
 | [Moodle-Anforderungen](docs/research/moodle-anforderungen.md) | Aktueller Marketplace-Prozess, Guardians-Pause und Grenzen automatisierter Moodle-Checks |
 | [Prüfstandard – Entwurf v2](docs/pruefstandard-entwurf.md) | Vier Basisbereiche, funktionsabhängige Module und schlanke Nachweise |
+| [Vorschlag für Betrieb und Wartbarkeit beim NLQ](docs/nlq-betrieb-und-wartbarkeit.md) | Betreuung, Übernahme, Supportzeitraum und Entscheidung über Weiterbetrieb, Nachbesserung oder Ablösung |
 | [Kalibrierung an Moodle und etablierten Plugins](docs/research/moodle-pruefstandard-kalibrierung.md) | Offizielle Richtlinien und konkrete Testpraxis bei Attendance, Checklist und ObjectFS |
 | [Vereinsinventur](docs/research/verein-inventur.json) / [ByCS-Inventur](docs/research/bycs-inventory.json) | Maschinenlesbare Quellen, Commit-Stände und Prüfkonfigurationen |
 

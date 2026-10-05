@@ -65,4 +65,12 @@ Offene Befunde / Zuständigkeit / Termin:
 Freigabeentscheidung / verantwortliche Person:
 ```
 
-**Grenze:** Die aktuelle Marketplace-Submission-Liste war nicht vollständig lesbar; keine abschließende Behauptung über heutige Einreichungspflichten. [Moodle-Recherche](research/moodle-anforderungen.md) und [Kalibrierung](research/moodle-pruefstandard-kalibrierung.md) dokumentieren das. Konkrete NLQ-Anforderungen sind ergänzend als eigene Quelle zu erfassen.
+## Was recherchiert wurde und was noch offen ist
+
+**Gefunden und berücksichtigt:** Moodle veröffentlicht konkrete Sicherheitsrichtlinien, API-Vorgaben und Empfehlungen zu Tests und Plugin CI. Die [Moodle-Recherche](research/moodle-anforderungen.md) beschreibt diese Quellen. Es fehlt also nicht an Moodle-Sicherheitsanforderungen.
+
+**Noch nicht vollständig zugänglich:** Die aktuelle Marketplace-Einreichungsliste war im Recherchezugriff nicht lesbar. Deshalb beansprucht dieser Entwurf keine vollständige Abbildung aller aktuellen Aufnahmebedingungen des Marketplace. Diese begrenzte Quellenlücke verhindert einen eigenen Prüfstandard für den Betrieb beim NLQ nicht.
+
+**Was „Kalibrierung“ bedeutet:** Der erste Entwurf wurde mit Moodle-Richtlinien und konkreten Tests von Attendance, Checklist und ObjectFS abgeglichen. Dabei wurden Implementierungsanforderungen, Testempfehlungen und eigene Zusatzanforderungen unterschieden. Ergebnis: vier Basisbereiche, Zusatzmodule nach Funktion, keine pauschalen Scannerpunkte und keine doppelte Abwertung desselben Release-Nachweises. Das war eine Überprüfung unseres Maßstabs; die Referenzplugins wurden nicht neu ausgeführt oder als sicher zertifiziert. Einzelquellen stehen in der [Kalibrierungsrecherche](research/moodle-pruefstandard-kalibrierung.md).
+
+**Ziel beim NLQ:** Nach der im Gespräch beschriebenen Ausgangslage entwickelt das NLQ seinen Umgang mit Plugin-Sicherheit und Wartbarkeit noch. Dieses Repository soll dafür einen Vorschlag liefern. Der [Vorschlag für Betrieb und Wartbarkeit](nlq-betrieb-und-wartbarkeit.md) ergänzt die technischen Tests um Betreuung, Übernahmefähigkeit, Supportzeitraum und Entscheidungen über Nachbesserung oder Ablösung. Diese Kriterien sind unser Diskussionsvorschlag und noch keine beschlossenen NLQ-Vorgaben.

@@ -34,13 +34,13 @@ Die vollständigen Commit-IDs, Befehle, Datenbankimages, Privacy-Dateipfade und 
 
 | Priorität | Befund | Nächster sinnvoller Nachweis |
 | --- | --- | --- |
-| Hoch | Eigene negative Sicherheitstests fehlen in den geprüften Vereinsständen | Je exponiertem Endpunkt unberechtigte Rolle, fremder Kurs/Nutzer, fehlende oder ungültige Sesskey, ungültige Parameter und Dateizugriffe testen |
+| Hoch | Eigene negative Sicherheitstests fehlen in den geprüften Vereinsständen | Je eigener Schutzgrenze passende Rollen-/Fremdobjektfälle testen; eigene Schreib-, Eingabe- und Dateipfade berücksichtigen. Korrekte Core-API-Nutzung im Review nachweisen. |
 | Hoch | `local_plugininfo`, `block_mrbs_nds` und externes `moodle_dashboard` ohne sichtbaren GitHub-CI-Workflow | Passende automatisierte Checks einrichten; für Dashboard Python-/Web-/Token-Prüfungen statt Moodle-Lint verwenden |
-| Hoch | Semgrep nur bei `mod_videolearn` automatisch eingebunden | Regeln zunächst mit positiven/negativen Fixtures absichern, dann risikogerecht in alle Moodle-Plug-ins übernehmen |
+| Ergänzend | Semgrep nur bei `mod_videolearn` automatisch eingebunden; keine allgemeine Moodle-Pflicht nachgewiesen | Eigene Regeln mit positiven/negativen Fixtures absichern; Übernahme nach Nutzen und Risiko statt pauschaler Pflicht |
 | Hoch | `local_emailclient`, `repository_peertubeoauth` und `local_peertubeupload` kombinieren Moodle 5.2 mit PostgreSQL 14 | Laufdetails prüfen und kompatible DB-Version verwenden; Moodle-Plugin-CI-Changelog nennt PostgreSQL 16 als Voraussetzung für Moodle 5.2 |
 | Hoch | Bei `local_kursassistent` ist der jüngste gelesene Lauf fehlgeschlagen; bei `block_questionfilter` und `local_kursassistent` passt der jüngste Lauf nicht zum gelesenen HEAD | Aktuellen Release-Commit gezielt prüfen; die fünf gelesenen Läufe sind keine vollständige Historie |
-| Mittel | Testmatrix deckt je Version nur eine Datenbank ab; deklarierte Mindeststände stimmen teilweise nicht mit der Matrix überein | Unterstützte Versionen aus numerischem `requires` und realen Zielsystemen ableiten, Mindestversion testen |
-| Mittel | Ohne Abhängigkeits- und Secret-Scans bleiben zusätzliche Komponenten und versehentlich veröffentlichte Tokens außerhalb der sichtbaren CI | PHP-/JS-/Python-Abhängigkeiten und Drittbibliotheken inventarisieren; passende Audits und Secret-Scan einsetzen |
+| Mittel | Deklarierte Mindeststände stimmen teilweise nicht mit der Matrix überein; je Version wird nur eine Datenbank geprüft | Unterstützte Versionen aus numerischem `requires` und realen Zielsystemen ableiten; Mindestversion testen, DB-Auswahl begründen. Keine Pflicht zum vollständigen Kreuzprodukt. |
+| Nach Risiko | Abhängigkeits- und Secret-Prüfungen sind in der sichtbaren CI nicht deklariert; Plattformprüfungen nicht erhoben | Eigene Drittbibliotheken inventarisieren und relevante Befunde bewerten; passende Audit-/Secret-Werkzeuge ergänzen |
 | Mittel | Workflow-Dateien legen keine expliziten `permissions` fest; Actions werden über Versions-Tags eingebunden | Minimale Token-Rechte festlegen, Abhängigkeiten der Build-Kette kontrollieren und aktualisieren |
 
 Quelle zur PostgreSQL-Anforderung: [offizieller Moodle Plugin CI Changelog, 4.5.10](https://moodlehq.github.io/moodle-plugin-ci/CHANGELOG.html). Die grünen GitHub-Gesamtstatus trotz dieser Konfiguration sind ein Grund, die einzelnen Installations-/Testschritte und Logs zu prüfen; hier wird daraus kein reproduzierter Laufzeitfehler behauptet.
@@ -68,3 +68,7 @@ Beim Lesen der Regeln fallen folgende Grenzen auf; diese wurden **nicht durch ei
 - Die Aussage „Systembefehle grundsätzlich unzulässig“ sollte mit den Moodle-Sicherheitsrichtlinien abgeglichen werden; risikobasierte Prüfung und begründete Ausnahmen bleiben nötig.
 
 Für verlässliche Scanner braucht jede Regel mindestens einen absichtlich unsicheren Treffer und eine sichere Gegenprobe. Hinzu kommen dokumentierte Ausnahmen mit Verantwortlichem und Begründung. Das verhindert, dass Null Treffer als vollständige Sicherheitsfreigabe verstanden werden.
+
+## Kalibrierung der Empfehlungen
+
+Die Befunde oben bleiben eine Bestandsaufnahme. Fehlende Scanner sind keine automatisch nachgewiesene Moodle-Abweichung. Für eigene Sicherheitsgrenzen sind gezielte Negativtests wichtig; korrekt eingebundene Core-Schutzmechanismen können im Review nachgewiesen werden. Maßgeblich für die Fallplanung ist der [überarbeitete Prüfstandard](../pruefstandard-entwurf.md), begründet in der [Kalibrierungsrecherche](moodle-pruefstandard-kalibrierung.md).

@@ -8,13 +8,16 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 
 | Dokument | Inhalt |
 | --- | --- |
-| [Prüfplan-Abdeckung in Prozent](docs/pruefplan-abdeckung.md) | Skala und Fortschrittsbalken je Vereinsprojekt, MooGPT und Kurspilot sowie AI Chat als bayerische Referenz; getrennt von Code-Coverage |
+| [Fortschritt und Testabdeckung](docs/pruefplan-abdeckung.md) | Fallbezogene Prozentberechnung, belegter Stand je Projekt und AI Chat; alte Pauschalwerte zurückgezogen |
 | [Vereinsprojekte](docs/research/verein-checks.md) | Tabelle je Projekt, konfigurierte Checks, jüngste sichtbare CI-Läufe und Lücken |
 | [MooGPT und Kurspilot](docs/research/eigene-projekte.md) | Externe Tools, native Moodle-Komponente, ältere Mirror-Linie und konkrete Sicherheitsfälle |
 | [Bayerische Referenzen](docs/research/bayern-checks.md) | Gesamttabelle aller öffentlichen ByCS-Projekte; vertiefter Blick auf KI-Manager und AI-Chat |
 | [Moodle-Anforderungen](docs/research/moodle-anforderungen.md) | Aktueller Marketplace-Prozess, Guardians-Pause und Grenzen automatisierter Moodle-Checks |
-| [Prüfstandard – Entwurf](docs/pruefstandard-entwurf.md) | Gemeinsame Prüfpunkte mit Nachweisen und schlanke Vorlage pro Release |
+| [Prüfstandard – Entwurf v2](docs/pruefstandard-entwurf.md) | Vier Basisbereiche, funktionsabhängige Module und schlanke Nachweise |
+| [Kalibrierung an Moodle und etablierten Plugins](docs/research/moodle-pruefstandard-kalibrierung.md) | Offizielle Richtlinien und konkrete Testpraxis bei Attendance, Checklist und ObjectFS |
 | [Vereinsinventur](docs/research/verein-inventur.json) / [ByCS-Inventur](docs/research/bycs-inventory.json) | Maschinenlesbare Quellen, Commit-Stände und Prüfkonfigurationen |
+
+Der erste Entwurf mit zehn gleich gewichteten Bereichen und Werten wie „35 % für AI Chat“ wurde nach der Moodle-Recherche zurückgezogen. Der überarbeitete Plan verlangt passende Schutzprüfungen und zusätzliche Werkzeuge nach Risiko. Neue Gesamtwerte werden erst anhand konkreter Fallpläne berechnet.
 
 ## Vergleich und Schlussfolgerungen
 
@@ -24,7 +27,7 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 | Vereins-Dashboard | Externes Python-/Flask-Tool; keine sichtbare GitHub-CI | Eigener Web-/Token-/Abhängigkeits-Prüfpfad erforderlich |
 | MooGPT | Externes Node-/Express-Tool mit Tests | Keine sichtbare CI am HEAD; Authentifizierung und Origin-Abgleich vorrangig überprüfen |
 | Kurspilot – native Linie | CI am geprüften HEAD erfolgreich; konkrete negative OAuth-, Zugriffs-, Datei- und Netzwerkfälle | Sicherheitsfälle und Gate-Umfang dokumentieren; ältere Mirror-Linie getrennt bewerten |
-| ByCS | Unterschiedliche CI-Familien; gemeinsame Vorlage bei 18 Plug-ins; echte negative Tests in der KI-Suite | Öffentliche Konfiguration bildet interne Prüfungen nicht vollständig ab; eigene Scanner/Audits zusätzlich nachweisen |
+| ByCS | Unterschiedliche CI-Familien; gemeinsame Vorlage bei 18 Plug-ins; echte negative Tests in der KI-Suite | Öffentliche Konfiguration bildet interne Prüfungen nicht vollständig ab; konkrete negative Testfälle als Referenz nutzen |
 
 **Analyse:** Die größte gemeinsame Verbesserung sind konkrete Tests, die unberechtigte Zugriffe und gefährliche Eingaben zuverlässig ablehnen. Zusätzliche Scanner helfen, brauchen aber selbst geprüfte Regeln und bewertete Befunde. Kurspilot und die bayerische KI-Suite liefern dafür nachweisbare Beispiele.
 
@@ -34,9 +37,9 @@ Ein belegbarer höherer Standard entsteht durch zusätzliche geprüfte Schutzwir
 
 1. MooGPT-Authentifizierung und Origin-Prüfung mit negativen Tests absichern; Tests in CI ausführen.
 2. Vereins-CI am jeweiligen Release-Commit nachvollziehen, fehlende Pipelines und inkompatible DB-Matrizen bearbeiten.
-3. Für alle exponierten Moodle-Funktionen Rollen-, Kurs-, Nutzer-, Datei- und Sesskey-Negativtests ergänzen.
-4. Semgrep-Regeln mit unsicheren/sicheren Fixtures überprüfen, dann einheitlich einsetzen; Abhängigkeits- und Secret-Prüfungen ergänzen.
-5. Gemeinsamen Prüfstandard beschließen und je Release konkrete Lauf-/Artefaktnachweise sowie verbleibende Befunde festhalten.
+3. Je Projekt die anwendbaren Basis- und Funktionsfälle festlegen; eigene Rechte-/Objektgrenzen und Schreiblogik gezielt negativ testen. Korrekte Nutzung gemeinsamer Moodle-APIs im Review nachweisen.
+4. Eigene Semgrep-Regeln mit unsicheren/sicheren Fixtures überprüfen; Scanner und Abhängigkeits-/Secret-Prüfungen nach Nutzen und Risiko ergänzen.
+5. Gemeinsamen Prüfstandard beschließen; Fortschritt als belegte/anwendbare Fälle ausweisen und je Release Lauf-/Paketnachweise sowie Befunde festhalten.
 
 Die Bestandsaufnahme ändert keine anderen Projekte. Sie ersetzt weder ein vollständiges Codeaudit noch eine institutionelle Freigabe. Es wurden vorhandene Konfigurationen, Testinhalte und ausgewählte veröffentlichte Laufnachweise gelesen; die fremden Tests wurden hier nicht neu ausgeführt. Jede Detailtabelle verlinkt ihre Quellen und beschreibt ihre Grenzen.
 

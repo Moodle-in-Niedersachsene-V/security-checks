@@ -157,5 +157,5 @@ Die Plug-ins referenzieren die Vorlage mit `@main`; die Vorlagen-Scripts werden 
 1. Einen gemeinsamen Moodle-CI-Standard einschließlich der tatsächlich unterstützten PHP-/Moodle-/DB-Kombinationen pflegen; Ausnahmen und nicht blockierende Schritte je Projekt begründen.
 2. Konkrete negative Berechtigungs- und Mandanten-/Objektzugriffstests schreiben. AI Manager und AI Chat sind dafür belegbare Referenzen.
 3. Eigene Tests und deren Sicherheitsfälle gesondert inventarisieren; „PHPUnit aktiv“ darf nicht mit getesteter Sicherheit gleichgesetzt werden.
-4. Ergänzungen wie SAST, Secretsuche, Abhängigkeitsprüfung und gezielte dynamische Angriffe als **unseren zusätzlichen Nachweis** planen. Der öffentliche ByCS-Stand allein zeigt dafür keine durchgängige deklarierte Pipeline.
+4. Ergänzungen wie SAST, Secretsuche, Abhängigkeitsprüfung und gezielte dynamische Tests nach konkretem Risiko planen. Keine jeweils eigene Moodle-Pflicht oder pauschaler Punkteabzug: siehe [Kalibrierung](moodle-pruefstandard-kalibrierung.md). Der öffentliche ByCS-Stand allein zeigt dafür keine durchgängige deklarierte Pipeline.
 5. Für einen Vergleich mit dem tatsächlichen bayerischen Betriebsstandard interne Pipeline-/Audit-Nachweise erfragen. Der öffentliche Repository-Vergleich erlaubt keine Aussage, ob Niedersachsen einen höheren Gesamtsicherheitsstandard erreicht.

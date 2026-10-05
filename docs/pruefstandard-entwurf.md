@@ -1,55 +1,68 @@
 # Vorschlag für einen gemeinsamen Prüfstandard
 
-Stand: 05.10.2026. **Diskussionsentwurf**, noch keine beschlossene Vereinsrichtlinie oder bestätigte NLQ-Anforderung. Grundlage sind die belegten Projektchecks, [Moodle-Sicherheitsrichtlinien](https://moodledev.io/general/development/policies/security) und deren dokumentierte Grenzen. Für externe Webanwendungen bietet [OWASP ASVS](https://owasp.org/projects/asvs) eine ergänzende Prüfreferenz; ein konkretes ASVS-Level wurde hier nicht vereinbart.
+Stand: **05.10.2026, überarbeiteter Entwurf v2**. Keine beschlossene Vereinsrichtlinie, Moodle-Zertifizierung oder bestätigte NLQ-Anforderung. Grundlage: [Moodle-Sicherheitsrichtlinien](https://moodledev.io/general/development/policies/security), [Moodle Plugin CI](https://moodlehq.github.io/moodle-plugin-ci/Help.html) und [Recherche mit etablierten Plugins](research/moodle-pruefstandard-kalibrierung.md).
 
-## Einheitliche Nachweise, passende Werkzeuge
+## Warum der Entwurf vereinfacht wurde
 
-Ein Moodle-Plug-in läuft innerhalb Moodles. Ein externes Tool hat zusätzlich eigene Anmeldung, Server, Browser-Origin, Netzwerkschnittstellen und Tokenablage. Kurspilot enthält beide Teile; für eine Freigabe gehören beide in denselben Nachweis. Der gemeinsame Standard beschreibt geprüfte Schutzwirkungen, die konkrete Werkzeugwahl folgt dem Stack.
+Die zehn gleich gewichteten Bereiche des ersten Entwurfs waren unsere Zusammenstellung. Zusätzliche Scanner erhielten eigene Pflichtpunkte, Release-Nachweise wurden teilweise doppelt bewertet und noch nicht untersuchte Anforderungen blieben pauschal im Nenner. Daraus entstand beispielsweise die irreführende Bewertung des AI Chat mit 35 %. Diese Skala wird zurückgezogen; sie ist im [ursprünglichen Commit](https://github.com/Moodle-in-Niedersachsene-V/security-checks/tree/8d762c0) nachvollziehbar.
 
-| ID | Bereich | Moodle-Plug-in | Externes Tool | Erwarteter Nachweis |
-| --- | --- | --- | --- | --- |
-| C01 | Qualität und Installation | PHP-Lint, Moodle Code Checker/PHPDoc, Struktur, Savepoints; Mustache/Grunt soweit vorhanden | Syntax-/Build-/Lint-Prüfungen für Node/Python und produktionsnaher Start | Erfolgreicher Lauf am Release-Commit; Installation des tatsächlichen Artefakts |
-| C02 | Authentifizierung und Autorisierung | Login, Kontext, Capability, Kurs-/Gruppen-/Nutzergrenzen | Serverseitige Identität, Token-/Session-Gültigkeit, Rollen-/Mandantengrenzen | Negative Tests ohne Anmeldung, mit unberechtigter Rolle und fremder Objekt-ID |
-| C03 | Zustandsänderungen | Formular-/AJAX-/Webservice-Schutz passend zur API, Sesskey und HTTP-Methode | CSRF bei Cookie-Authentifizierung; CORS/Origin und Token-Modell passend zur Architektur | Ungültige/fehlende Sesskey beziehungsweise Token ablehnen; Origin ist kein Identitätsnachweis |
-| C04 | Eingaben und Ausgaben | Typisierte Parameter, gebundenes SQL, kontextgerechtes Escaping | Schema-/Parameterprüfung, gebundenes SQL, sichere HTML-/Markdown-Ausgabe | SQL-/XSS-/Pfad-Testfälle, manipulierte Parameter und externe Antworten |
-| C05 | Dateien und Netzwerk | File API/Pluginfile, Eigentümer und Kontext prüfen; sichere externe Requests | Upload-/Download-Grenzen, Zielvalidierung, sichere TLS-Verbindungen | Fremde Dateien, Pfadtraversal, interne/verbotene Ziele, Redirects und Größenlimits testen |
-| C06 | Abhängigkeiten und Geheimnisse | Composer/npm sowie eingebundene Drittbibliotheken berücksichtigen | npm/pip und Betriebskomponenten berücksichtigen | Passender Abhängigkeits-Audit und Secret-Scan; dokumentierte Bewertung jedes relevanten Befunds |
-| C07 | Statische Sicherheitsanalyse | Moodle-Semgrep mit getesteten Regeln | Stackgerechte PHP-/JS-/Python-Regeln | Scanner-Lauf plus Fixtures; Ausnahmen mit Begründung und Verantwortlichem |
-| C08 | Daten und Datenschutz | Privacy API soweit erforderlich, Export/Löschung, externe Datenflüsse und Events | Datensparsamkeit, Zugriff auf gespeicherte Daten, Löschung, Token-/Log-Redaktion | Tests für Zugriff und Löschung; dokumentierte Empfänger, Datenarten und Aufbewahrung |
-| C09 | Kompatibilität und Upgrade | Unterstützte Moodle-/PHP-/DB-Stände aus realer Versionserklärung ableiten | Unterstützte Runtime-/OS-/Bereitstellungsstände | Mindestversion, eingesetzte Version und relevanter Upgradepfad getestet |
-| C10 | Build-Kette und Freigabe | Wie beim externen Tool | Minimale CI-Rechte, kontrollierte Actions und reproduzierbares Artefakt | Release-SHA/Artefakt, erforderliche grüne Checks, bewertete Restbefunde, zuständige Person |
+Moodle verlangt passende Schutzmechanismen und empfiehlt Tests. Daraus folgt keine allgemeine Pflicht zu einer bestimmten Scannerkette oder einer festen Coverage-Prozentzahl. Unser Mehrwert soll aus gezielten Prüfungen eigener Schutzgrenzen entstehen. Die Recherche unterscheidet Implementierungsrichtlinien, empfohlene Tests und zusätzliche Vereinsanforderungen.
 
-C02–C05 verlangen konkrete Angriffsfälle. Ein Scanner ersetzt diese Tests nicht. PHPUnit/Behat ohne eigene Testfälle erfüllt diese Prüfpunkte nicht. Hohe Liniencoverage ist hilfreich, sagt aber allein nichts über die getesteten Sicherheitsgrenzen aus.
+## Vier Basisbereiche
 
-Für Netzwerk-, Datei-, Admin- und KI-Funktionen sind die jeweiligen Zeilen besonders relevant. Bei KI-Tools zusätzlich prüfen, ob fremde Kurs-/Personendaten in Prompts oder Antworten gelangen und ob Modellantworten neue Aktionen ohne erneute Berechtigungsprüfung auslösen können. Diese Zusatzfälle sind aus den vorhandenen Integrationen abgeleitete Empfehlungen.
+Die Bereiche strukturieren den Plan; sie erhalten keine pauschalen Punkte. Je Projekt werden konkrete, anwendbare Fälle mit erwartetem Ergebnis festgelegt.
 
-## Vorgehen bei Freigaben
+| ID | Bereich | Schlanker Ausgangspunkt | Geeigneter Nachweis |
+| --- | --- | --- | --- |
+| B1 | Qualität und Kompatibilität | Moodle Plugin CI: Installation, PHP-Lint, Moodle-Code-/Dokumentationsprüfung, Struktur und Savepoints; Mustache/Grunt soweit verwendet. Eigene Tests ausführen. Deklarierte und eingesetzte Moodle-/PHP-/DB-Stände berücksichtigen; Upgrade bei eigener Änderung prüfen. | Erfolgreicher Lauf mit geprüften Versionen; begründete Auswahl statt vollständigem Kreuzprodukt aller Plattformen |
+| B2 | Anmeldung und Berechtigungen | Login beziehungsweise API-Authentifizierung, richtiger Kontext, Capability und relevante Kurs-/Gruppen-/Nutzer-/Objektgrenzen | Review der Einstiegspunkte; eigener Negativtest mit unberechtigter Rolle und fremder Objekt-ID sowie zulässiger Gegenfall je unterschiedlicher Schutzlogik |
+| B3 | Zustandsänderungen | Form-, AJAX- oder Webservice-Schutz passend zur API und Authentifizierung | Review korrekter API-Nutzung; eigene Request-Verarbeitung mit fehlendem/ungültigem Sesskey oder Token prüfen; abgelehnter Request verändert keine Daten |
+| B4 | Eingaben und Ausgaben | Typisierte Parameter, gebundenes SQL, passende Text-/HTML-/JS-Ausgabe; externe Inhalte als unvertrauenswürdig behandeln | Review der eigenen Verarbeitung; problematische Zeichen und manipulierte Inhalte an relevanten Eingabe-/Ausgabepfaden testen |
 
-1. Projektteile, Release-Commit und Artefakt festlegen. Veraltete Mirrors getrennt erfassen.
-2. Für C01–C10 angeben: **bestanden**, **offen**, **fehlgeschlagen** oder **nicht anwendbar**. Nicht anwendbar begründen.
-3. Befunde fachlich bewerten. Bestätigte ausnutzbare Sicherheitslücken vor einer regulären Freigabe beheben; Fehlalarme und akzeptierte Restrisiken ausdrücklich dokumentieren.
-4. Vorgeschriebene Checks als Merge-/Release-Bedingungen einrichten. Ein Workflow-Eintrag allein beweist keine verbindliche Sperre.
-5. Nachweis für die konkrete ausgelieferte Version archivieren; nach Änderungen erneut prüfen und veröffentlichte Abhängigkeiten weiter beobachten.
+**Moodle-APIs richtig prüfen:** Browserseiten und External-Funktionen unterscheiden. Bei External-Funktionen sind Parameter-/Kontextvalidierung und Capabilities maßgeblich; `require_login()` ist dort kein universeller Zusatzcheck. Die [External-API-Dokumentation](https://moodledev.io/docs/5.0/apis/subsystems/external/writing-a-service) beschreibt den Ablauf. Die [Form API übernimmt Sesskey- und Methodenprüfung](https://moodledev.io/general/development/policies/security/crosssite-request-forgery); ihre korrekte Einbindung prüfen, nicht alle Core-Schutzfunktionen im Plugin erneut testen. Nicht jede Leseoperation braucht einen Sesskey.
 
-Bei allgemeinen Scannern sollte die Sperre von bewerteten Befunden abhängen. Bei Semgrep bedeutet die Schweregradbezeichnung einer Regel nicht automatisch dieselbe fachliche Risikoeinstufung. Der vorhandene videolearn-Aufruf nutzt `--error`; seine Wirkung und akzeptierte Ausnahmen gehören in die Freigabedokumentation.
+Review belegt die nachvollzogene Implementierung, ein ausgeführter Test das getestete Verhalten. Kritische eigene Rechte-/Tokenlogik sollte wiederholbare Negativtests haben. Gleichartige Endpunkte können gemeinsam erfasst werden, wenn dieselbe Schutzlogik nachweislich greift; abweichende Grenzen brauchen eigene Fälle. Ein PHPUnit-/Behat-Befehl ohne eigene Testfälle ist kein zusätzlicher Verhaltensnachweis.
 
-GitHub dokumentiert [minimale Workflow-Rechte und das Fixieren von Actions auf vollständige Commit-SHAs](https://docs.github.com/en/actions/reference/security/secure-use). [GitHub Secret Scanning](https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning) kann außerhalb eigener Workflow-Dateien laufen. Solche Plattformfunktionen und Branchregeln wurden in dieser Inventur nicht vollständig geprüft.
+## Zusatzmodule nach vorhandener Funktion
 
-## Schlanker Nachweis pro Release
+| Modul / Auslöser | Passende Prüfung |
+| --- | --- |
+| Dateien: eigene Uploads, Downloads, `pluginfile` | Kontext, Eigentümer, fremde Datei-ID; Pfadverarbeitung, Typ-/Größenbegrenzung soweit relevant |
+| Netzwerk: externe Requests | TLS und angemessene Zeit-/Größenlimits; bei beeinflussbaren Zielen zusätzlich erlaubte Ziele, SSRF und relevante Redirects |
+| Personenbezogene Daten | Für jedes Plugin passenden [Privacy-Provider](https://moodledev.io/docs/5.3/apis/subsystems/privacy) prüfen. Bei eigener Speicherung/Weitergabe zusätzlich Metadaten, Export/Löschung, Empfänger und Aufbewahrung; fremde Daten bleiben geschützt. `null_provider` nur bei tatsächlich erfüllten Voraussetzungen. |
+| OAuth, Tokens, externes Tool | Serverseitige Identität, Ablauf/Widerruf und Rechtebindung; CSRF/CORS passend zum Authentifizierungsmodell. Origin allein beweist keine Identität. |
+| KI/LLM | Berechtigte Daten für Prompt/Antwort, sichere Ausgabe unvertrauenswürdiger Antworten, angemessene Mengen-/Kostenlimits; bei Aktionen erneute Rechteprüfung |
+| Eigene Drittbibliotheken | Versionen inventarisieren und bekannte relevante Schwachstellen bewerten; geeignetes Auditwerkzeug verwenden, sofern sinnvoll |
+| Backup/Restore, Migration, Löschung | Eigene Daten erhalten beziehungsweise richtig entfernen; Rechte und Eigentümer nach Restore; betroffene Upgradepfade |
+
+Für MooGPT und das Dashboard gelten passende Schutzwirkungen ebenfalls, aber keine Moodle-spezifischen Lint-/Form-API-Vorgaben. Sie betreiben eigene Webschnittstellen und brauchen einen eigenen Nachweis. Bei Kurspilot native Linie und ältere externe/Mirror-Linie getrennt planen; Ergebnisse nicht auf andere Komponenten übertragen. grAIde bleibt ausgeschlossen.
+
+## Ergänzende Werkzeuge
+
+SAST, Secret-Scanning und Abhängigkeits-Audits können sinnvoll sein. Sie sind **keine jeweils zehn Pflichtpunkte** und keine allgemeine, hier belegte Moodle-Werkzeugpflicht. Fehlende Workflow-Zeilen beweisen auch nicht, dass Plattformscans oder interne Prüfungen fehlen.
+
+Die vorhandenen eigenen Semgrep-Regeln zunächst mit unsicheren Treffern und sicheren Gegenfällen prüfen; danach nach Nutzen und Risiko einsetzen. Scanner-Funde fachlich bewerten und Ausnahmen begründen. Keine universelle Pflicht zu DAST, Live-DNS-Labor, Browser-E2E für jede Funktion, vollständiger Plattformmatrix oder 80 % Liniencoverage. Solche Prüfungen ergänzen, wenn konkrete Funktionen oder Betriebsanforderungen sie rechtfertigen.
+
+## Fortschritt und Freigabe
+
+**Prüfplan-Fortschritt = belegte anwendbare Fälle / alle festgelegten anwendbaren Fälle × 100.** Zähler/Nenner, Planversion und geprüften Commit anzeigen. Status je Fall: **belegt**, **offen**, **fehlgeschlagen**, begründet **nicht anwendbar**. Nicht anwendbare Fälle entfallen aus dem Nenner; offene und fehlgeschlagene bleiben darin. Bei offenen Fällen unterscheiden: noch nicht untersucht oder Nachweis fehlt. Belegart separat: Review, manueller Test, automatisierter Test.
+
+Das ist ein Fortschrittswert für den vereinbarten Plan. Die **automatisierte Testabdeckung des Plans** wird separat als erfolgreich automatisiert geprüfte Fälle / anwendbare Fälle angegeben; Code-Liniencoverage bleibt ein weiterer eigener Wert. Vergleich nur bei hinreichend gleichem Umfang. Keine neuen Prozentwerte ohne festgelegten Fallplan. Beispiele und Bestandsaufnahme: [Prüfplan-Abdeckung](pruefplan-abdeckung.md).
+
+Vor einer Freigabe einmal festhalten: geprüfter Commit und zugeordnetes Paket, vereinbarte erfolgreiche Checks, verbleibende Befunde und verantwortliche Person. Ein Paket-Installationsnachweis gehört an diese Grenze, ohne denselben fehlenden Beleg mehrfach abzuwerten. Bestätigte ausnutzbare Lücken blockieren eine reguläre Freigabe unabhängig vom Fortschrittswert. Nach relevanten Änderungen die betroffenen Fälle erneut prüfen.
 
 ```markdown
-Projekt und Komponenten:
-Verantwortliche Person / Prüfdatum:
-Release / Quell-Commit / Artefakt-ID oder SHA-256:
-Unterstützte und getestete Moodle-/PHP-/DB-/Runtime-Stände:
+Projekt / Komponenten / verantwortliche Person:
+Prüfdatum / Planversion / geprüfter Commit / zugeordnetes Paket:
+Unterstützte und getestete Versionen:
 
-| Prüfpunkt | Status | Testfall / Lauf / Bericht | Befund oder Begründung |
-| --- | --- | --- | --- |
-| C01–C10 jeweils einzeln | | | |
+| Fall-ID / Bereich | Konkreter Fall und erwartetes Ergebnis | Status | Belegart / Quelle | Befund oder N/A-Begründung |
+| --- | --- | --- | --- | --- |
 
-Offene Befunde mit Schweregrad, Zuständigkeit und Termin:
-Ausnahmen und akzeptierte Restrisiken:
-Freigabeentscheidung und freigebende Person:
+Prüfplan-Fortschritt: __ / __ anwendbare Fälle (__ %)
+Automatisiert erfolgreich geprüft: __ / __ anwendbare Fälle (__ %)
+Offene Befunde / Zuständigkeit / Termin:
+Freigabeentscheidung / verantwortliche Person:
 ```
 
-Automatische Checks, manuelle Sicherheitsprüfung und eine institutionelle Freigabe sind unterschiedliche Nachweise. Die technischen Ergebnisse können eine Entscheidung des NLQ unterstützen; dessen konkrete Freigabekriterien müssen als eigene Quelle ergänzt werden.
+**Grenze:** Die aktuelle Marketplace-Submission-Liste war nicht vollständig lesbar; keine abschließende Behauptung über heutige Einreichungspflichten. [Moodle-Recherche](research/moodle-anforderungen.md) und [Kalibrierung](research/moodle-pruefstandard-kalibrierung.md) dokumentieren das. Konkrete NLQ-Anforderungen sind ergänzend als eigene Quelle zu erfassen.

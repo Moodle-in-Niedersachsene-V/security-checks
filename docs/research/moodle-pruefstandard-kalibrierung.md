@@ -23,6 +23,8 @@ Quellen: [Security](https://moodledev.io/general/development/policies/security),
 
 Die [MoodleHQ-CI-Vorlage](https://github.com/moodlehq/moodle-plugin-ci/blob/main/gha.dist.yml) enthält Qualitätsprüfungen, Installation, Savepoints, PHPUnit und Behat; PHP Mess Detector ist dort nicht blockierend und Code-Coverage standardmäßig ausgeschaltet. Dedizierte SAST-, Secret- oder Dependency-Scanner sind dort keine eigenständigen Pflichtschritte. Das ist ein Befund zur Vorlage, kein Beweis, dass entsprechende Prüfungen unnötig sind.
 
+Die [Guardians-Seite](https://moodledev.io/general/community/plugincontribution/guardians) und [QA-Prechecks](https://moodledev.io/general/community/plugincontribution/guardians/qaprechecks) waren bereits in der [Moodle-Bestandsaufnahme](moodle-anforderungen.md) erfasst und wurden am 05.10.2026 erneut geprüft. Sie ergänzen die Grund-QA um Debugging in der Testinstanz, abweichendes Tabellenpräfix, möglichst PostgreSQL sowie Installation, Regression und Funktionsprüfung. Beide Seiten weisen auf die Pause des Guardians-Programms hin; die QA-Seite ordnet ihre Anleitung dem früheren Directory-Prozess zu. Der überarbeitete Standard macht diese praktischen B1-Fälle nun ausdrücklich sichtbar.
+
 ## Stichprobe etablierter Plugins
 
 Gezielt unterschiedliche Funktionen gewählt: personenbezogene Anwesenheitsdaten, Checklist mit Gruppen/Kommentaren und externes Dateisystem. Die Stichprobe zeigt praktikable Muster, keinen repräsentativen Marktstandard und keine Sicherheitsfreigabe der Projekte.

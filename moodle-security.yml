@@ -3,6 +3,13 @@
 # Moodle in Niedersachsen e. V.
 #
 # Aufruf:  semgrep --config moodle-security.yml <plugin-verzeichnis>
+# Test:    python3 tests/run_fixtures.py
+#
+# Stand 2026-10-05: Regeln anhand von Fixtures ueberprueft und korrigiert
+# (siehe CHANGELOG-moodle-security.md). 23 Regeln.
+#
+# Grenzen: Semgrep arbeitet hier syntaktisch und je Funktion. 0 Treffer sind
+# keine Sicherheitsfreigabe; die Sichtpruefung bleibt erforderlich.
 ##############################################################################
 
 rules:
@@ -42,13 +49,14 @@ rules:
   # --------------------------------------------------------------------
   - id: moodle-sql-interpolation
     languages: [php]
-    severity: ERROR
+    severity: WARNING
     message: >-
       Variable direkt in eine SQL-Zeichenkette eingesetzt. Gebundene
-      Parameter verwenden, etwa $DB->get_records_sql($sql, ['id' => $id]),
-      oder Wertelisten ueber $DB->get_in_or_equal() absichern.
-      Fragmente aus get_in_or_equal() mit den ueblichen Namen ($insql,
-      $ctxsql und weitere) sind von dieser Regel ausgenommen.
+      Parameter verwenden oder Wertelisten ueber $DB->get_in_or_equal()
+      absichern. HEURISTIK: Variablen mit den ueblichen Fragmentnamen
+      ($insql, $ctxsql und weitere) sind allein wegen ihres Namens
+      ausgenommen, und zwar fuer die ganze Zeichenkette. Nutzereingaben
+      erkennt die Regel moodle-sql-nutzereingabe.
     patterns:
       - pattern-either:
         - pattern: $DB->get_records_sql("...$X...", ...)
@@ -176,6 +184,46 @@ rules:
       - pattern-not: $DB->execute("...$tagsql...", ...)
       - pattern-not: $DB->execute("...$tagsql...")
 
+  - id: moodle-sql-nutzereingabe
+    languages: [php]
+    severity: ERROR
+    message: >-
+      Wert aus required_param()/optional_param() oder einer Superglobalen
+      gelangt in den SQL-Text. Gebundene Parameter verwenden; Spalten- und
+      Sortiernamen gegen eine feste Positivliste pruefen (in_array mit
+      strict). Die Analyse folgt dem Datenfluss nur innerhalb einer
+      Funktion beziehungsweise Datei.
+    mode: taint
+    pattern-sources:
+      - pattern-either:
+          - pattern: required_param(...)
+          - pattern: optional_param(...)
+          - pattern: required_param_array(...)
+          - pattern: optional_param_array(...)
+          - pattern: $_GET
+          - pattern: $_POST
+          - pattern: $_REQUEST
+          - pattern: $_COOKIE
+    pattern-sanitizers:
+      - pattern-either:
+          - pattern: $DB->get_in_or_equal(...)
+          - pattern: clean_param($X, PARAM_INT)
+          - pattern: (int) $X
+          - pattern: intval(...)
+      - by-side-effect: true
+        patterns:
+          - pattern-either:
+              - pattern: in_array($X, ...)
+              - pattern: array_key_exists($X, ...)
+          - focus-metavariable: $X
+    pattern-sinks:
+      - patterns:
+          - pattern-inside: $DB->$M($SQL, ...)
+          - metavariable-regex:
+              metavariable: $M
+              regex: '^(get_records_sql|get_record_sql|get_field_sql|get_fieldset_sql|count_records_sql|get_recordset_sql|record_exists_sql|get_records_sql_menu|execute|get_records_select|get_record_select|get_recordset_select|count_records_select|delete_records_select|set_field_select|get_fieldset_select|record_exists_select|get_records_select_menu)$'
+          - focus-metavariable: $SQL
+
   - id: moodle-sql-konkatenation
     languages: [php]
     severity: WARNING
@@ -221,20 +269,56 @@ rules:
     languages: [php]
     severity: WARNING
     message: >-
-      Variable wird ohne erkennbare Maskierung ausgegeben. Fuer Klartext s()
-      verwenden, fuer nutzergenerierte Inhalte format_text() oder
-      format_string().
+      Variable wird ohne erkennbare Maskierung ausgegeben (direkt, verkettet
+      oder in einer Zeichenkette). Fuer Klartext s() verwenden, fuer
+      nutzergenerierte Inhalte format_text() oder format_string().
+      Nicht erkannt: Objekteigenschaften ($x->name) und Rueckgaben
+      beliebiger Methoden; das bleibt Sichtpruefung.
     patterns:
       - pattern-either:
-          - pattern: echo $X;
-          - pattern: print $X;
+          - pattern-inside: echo $E;
+          - pattern-inside: print $E;
+      - pattern: $X
       - metavariable-regex:
           metavariable: $X
           regex: '^\$[a-zA-Z_][a-zA-Z0-9_]*$'
       - metavariable-regex:
           metavariable: $X
-          regex: '^(?!\$(OUTPUT|PAGE|CFG|USER|COURSE|SITE))'
+          regex: '^(?!\$(OUTPUT|PAGE|CFG|USER|COURSE|SITE)$)'
+      - pattern-not-inside: s(...)
+      - pattern-not-inside: p(...)
+      - pattern-not-inside: format_string(...)
+      - pattern-not-inside: format_text(...)
+      - pattern-not-inside: get_string(...)
+      - pattern-not-inside: json_encode(...)
+      - pattern-not-inside: intval(...)
+      - pattern-not-inside: count(...)
+      - pattern-not-inside: userdate(...)
+      - pattern-not-inside: clean_param(...)
+      - pattern-not-inside: $O->$M(...)
+      - pattern-not-inside: $C::$M(...)
+      - pattern-not-inside: $O->$PROP
+      - pattern-not-inside: (int) $V
+      - pattern-not-inside: (float) $V
 
+  - id: moodle-html-writer-inhalt
+    languages: [php]
+    severity: INFO
+    message: >-
+      Variable als Inhalt von html_writer::tag(), div(), span() oder link().
+      html_writer maskiert nur Attribute, nicht den Inhalt. Pruefen, ob die
+      Variable bereits maskiert oder bewusst erlaubtes HTML ist. Hinweis
+      fuer die Sichtpruefung; haeufig zutreffend unbedenklich.
+    patterns:
+      - pattern-either:
+          - pattern: html_writer::tag($T, $X, ...)
+          - pattern: html_writer::div($X, ...)
+          - pattern: html_writer::span($X, ...)
+          - pattern: html_writer::link($U, $X, ...)
+      - focus-metavariable: $X
+      - metavariable-regex:
+          metavariable: $X
+          regex: '^\$[a-zA-Z_][a-zA-Z0-9_]*$'
 
   - id: moodle-capability-ohne-riskbitmask
     languages: [php]
@@ -244,10 +328,10 @@ rules:
       Einbringen von Inhalten, gehoert RISK_XSS gesetzt; bei
       Massenversand RISK_SPAM, bei Zugriff auf fremde Daten
       RISK_PERSONAL. Ist keines davon zutreffend, kann der Befund
-      abgehakt werden.
-      HINWEIS: Die Regel setzt die uebliche Reihenfolge voraus, bei der
-      riskbitmask als erster Eintrag steht.
-    pattern: "['captype' => 'write', ...]"
+      abgehakt werden. Die Reihenfolge der Eintraege spielt keine Rolle.
+    patterns:
+      - pattern: "[..., 'captype' => 'write', ...]"
+      - pattern-not: "[..., 'riskbitmask' => $R, ...]"
     paths:
       include:
         - "**/db/access.php"
@@ -259,39 +343,46 @@ rules:
       Capability ohne archetypes. Ohne Archetypen ist die Capability
       zunaechst fuer keine Rolle erlaubt und muss von Hand vergeben
       werden. Ist das beabsichtigt, kann der Befund abgehakt werden.
+      Die Reihenfolge der Eintraege spielt keine Rolle.
     patterns:
-      - pattern-either:
-        - pattern: "['captype' => $T, ...]"
-        - pattern: "['riskbitmask' => $R, ...]"
-      - pattern-not: "['captype' => $T, 'contextlevel' => $C, 'archetypes' => $A]"
-      - pattern-not: "['riskbitmask' => $R, 'captype' => $T, 'contextlevel' => $C, 'archetypes' => $A]"
+      - pattern: "[..., 'captype' => $T, ...]"
+      - pattern-not: "[..., 'archetypes' => $A, ...]"
     paths:
       include:
         - "**/db/access.php"
 
-  # --------------------------------------------------------------------
-  # 4. Schreibende Aktionen
-  # --------------------------------------------------------------------
   - id: moodle-fehlender-sesskey
     languages: [php]
     severity: ERROR
     message: >-
-      Schreibende Datenbankaktion ohne erkennbare Sesskey-Pruefung in dieser
-      Datei. Bei Aktionen, die ueber GET oder POST ausgeloest werden, ist
-      require_sesskey() Pflicht (Schutz vor CSRF).
+      Schreibende Datenbankaktion ohne wirksame Sesskey-Pruefung. Bei
+      Aktionen, die ueber GET oder POST ausgeloest werden, ist
+      require_sesskey() Pflicht (Schutz vor CSRF). Anerkannt werden
+      require_sesskey(), ein ausgewertetes confirm_sesskey() und
+      moodleform::get_data(). Ein bloßer Aufruf confirm_sesskey(); ohne
+      Auswertung schuetzt nicht. classes/, db/ und lib.php werden nicht
+      geprueft und bleiben Sichtpruefung.
     patterns:
       - pattern-either:
           - pattern: $DB->insert_record(...)
+          - pattern: $DB->insert_records(...)
           - pattern: $DB->update_record(...)
           - pattern: $DB->delete_records(...)
           - pattern: $DB->delete_records_select(...)
+          - pattern: $DB->delete_records_list(...)
           - pattern: $DB->set_field(...)
+          - pattern: $DB->set_field_select(...)
+          - pattern: $DB->execute(...)
       - pattern-not-inside: |
           require_sesskey();
           ...
       - pattern-not-inside: |
-          confirm_sesskey(...);
+          if (!confirm_sesskey()) { ... }
           ...
+      - pattern-not-inside: |
+          if (confirm_sesskey()) { ... }
+      - pattern-not-inside: |
+          if ($D = $F->get_data()) { ... }
     paths:
       exclude:
         - "classes/"
@@ -315,25 +406,41 @@ rules:
     languages: [php]
     severity: ERROR
     message: >-
-      Einstiegsdatei ohne require_login() oder require_admin(). Jede direkt
+      Einstiegsdatei ohne require_login(), require_course_login(),
+      require_admin() oder admin_externalpage_setup(). Jede direkt
       aufrufbare Seite muss die Anmeldung erzwingen, sofern sie nicht
-      bewusst oeffentlich ist (dann Ausnahme dokumentieren).
+      bewusst oeffentlich ist (dann Ausnahme dokumentieren). CLI-Skripte
+      sind ausgenommen. Erkannt werden require/require_once/include von
+      config.php in beliebiger Verzeichnistiefe.
     patterns:
-      - pattern: require_once($X);
-      - pattern-inside: |
-          require_once(__DIR__ . '/../../config.php');
-          ...
+      - pattern-either:
+          - pattern: require_once($P);
+          - pattern: require($P);
+          - pattern: include_once($P);
+          - pattern: include($P);
+      - metavariable-regex:
+          metavariable: $P
+          regex: '.*(^|[^a-z_])config\.php'
       - pattern-not-inside: |
           ...
           require_login(...);
           ...
       - pattern-not-inside: |
           ...
+          require_course_login(...);
+          ...
+      - pattern-not-inside: |
+          ...
           require_admin(...);
           ...
+      - pattern-not-inside: |
+          ...
+          admin_externalpage_setup(...);
+          ...
+      - pattern-not-inside: |
+          define('CLI_SCRIPT', true);
+          ...
     paths:
-      include:
-        - "*.php"
       exclude:
         - "**/classes/**"
         - "**/db/**"
@@ -347,49 +454,40 @@ rules:
     languages: [php]
     severity: ERROR
     message: >-
-      Webservice-Funktion ohne validate_context() oder self::validate_context().
-      Ohne Kontextpruefung greifen die Berechtigungspruefungen nicht korrekt.
+      Webservice-Methode ohne self::validate_context(). Ohne
+      Kontextpruefung greifen die Berechtigungspruefungen nicht korrekt;
+      require_capability() ersetzt validate_context() nicht. Geprueft wird
+      jede oeffentliche statische Methode einer external_api-Klasse ausser
+      *_parameters, *_returns und *_is_deprecated. Hilfsmethoden ohne
+      Webservice-Funktion koennen abgehakt werden. Ob der richtige Kontext
+      validiert wird, bleibt Sichtpruefung.
     patterns:
+      - pattern-inside: |
+          class $CLASS extends external_api { ... }
       - pattern: |
-          public static function $NAME(...) {
-            ...
-          }
-      - pattern-inside: |
-          class $CLASS extends external_api {
-            ...
-          }
-      - pattern-inside: |
-          ...
-          self::validate_parameters(...);
-          ...
-      - pattern-not-inside: |
-          ...
-          self::validate_context(...);
-          ...
-      - pattern-not-inside: |
-          ...
-          validate_context(...);
-          ...
-      - pattern-not-inside: |
-          ...
-          require_capability(...);
-          ...
-      - pattern-not-inside: |
-          ...
-          has_capability(...);
-          ...
+          public static function $NAME(...) { ... }
+      - metavariable-regex:
+          metavariable: $NAME
+          regex: '^(?!.*_(parameters|returns|is_deprecated)$)'
+      - pattern-not: |
+          public static function $NAME(...) { ... self::validate_context(...); ... }
+      - pattern-not: |
+          public static function $NAME(...) { ... external_api::validate_context(...); ... }
+      - focus-metavariable: $NAME
+      - pattern-not-regex: '(private|protected)\s+(static\s+)?function\s+\w+'
 
-  # --------------------------------------------------------------------
-  # 6. Dateien
-  # --------------------------------------------------------------------
   - id: moodle-pluginfile-ohne-pruefung
     languages: [php]
     severity: ERROR
     message: >-
-      pluginfile-Handler ohne require_login() und Capability-Pruefung.
-      Ohne diese kann jeder beliebige Dateien aus dem Dateibereich abrufen.
+      pluginfile-Handler ohne Anmeldepruefung (require_login oder
+      require_course_login) oder ohne Capability-Pruefung (require_capability
+      oder has_capability in einer Bedingung). Ohne beides kann jeder
+      angemeldete oder sogar anonyme Nutzer Dateien aus dem Dateibereich
+      abrufen. Ob die richtige Capability im richtigen Kontext geprueft
+      wird, bleibt Sichtpruefung.
     patterns:
-      - pattern: |
+      - pattern-inside: |
           function $NAME($COURSE, $CM, $CONTEXT, $AREA, $ARGS, $FORCE, ...) {
             ...
           }
@@ -398,14 +496,27 @@ rules:
           regex: '.*_pluginfile$'
       - pattern-not: |
           function $NAME(...) {
-            ...
-            require_login(...);
-            ...
-          }
-      - pattern-not: |
-          function $NAME(...) {
             send_file_not_found();
           }
+      - pattern-either:
+          - patterns:
+            - pattern: |
+                function $NAME($COURSE, $CM, $CONTEXT, $AREA, $ARGS, $FORCE, ...) {
+                  ...
+                }
+            - pattern-not: |
+                function $NAME(...) { ... require_login(...); ... }
+            - pattern-not: |
+                function $NAME(...) { ... require_course_login(...); ... }
+          - patterns:
+            - pattern: |
+                function $NAME($COURSE, $CM, $CONTEXT, $AREA, $ARGS, $FORCE, ...) {
+                  ...
+                }
+            - pattern-not: |
+                function $NAME(...) { ... require_capability(...); ... }
+            - pattern-not: |
+                function $NAME(...) { ... if (<... has_capability(...) ...>) { ... } ... }
 
   - id: moodle-dateipfad-aus-eingabe
     languages: [php]
@@ -428,7 +539,9 @@ rules:
     severity: ERROR
     message: >-
       Ausfuehrung von externem Code oder Systembefehlen. In Moodle-Plugins
-      grundsaetzlich unzulaessig.
+      zu vermeiden. Ist ein Aufruf unumgaenglich, Argumente mit
+      escapeshellarg() maskieren und die Ausnahme begruenden; eval() und
+      assert() mit Zeichenkette sind nie zulaessig.
     pattern-either:
       - pattern: eval(...)
       - pattern: exec(...)
@@ -493,15 +606,34 @@ rules:
     message: >-
       Moeglicherweise fest eingetragenes Geheimnis. Zugangsdaten gehoeren
       in die Plugin-Einstellungen (admin_setting_configpasswordunmask)
-      und nicht in den Quellcode.
-    patterns:
-      - pattern: $VAR = "$SECRET";
-      - metavariable-regex:
-          metavariable: $VAR
-          regex: '(?i)\$(password|passwd|secret|apikey|api_key|token|clientsecret|clientid)$'
-      - metavariable-regex:
-          metavariable: $SECRET
-          regex: '^.{6,}$'
+      und nicht in den Quellcode. Erkannt werden Variablen, Eigenschaften
+      und Array-Schluessel mit typischen Namen und einem Literal ab sechs
+      Zeichen; Git-Historie und andere Dateitypen bleiben unberuecksichtigt.
+    pattern-either:
+      - patterns:
+          - pattern: $VAR = "$SECRET";
+          - metavariable-regex:
+              metavariable: $VAR
+              regex: '(?i)\$(password|passwd|secret|apikey|api_key|token|clientsecret|clientid)$'
+          - metavariable-regex:
+              metavariable: $SECRET
+              regex: '^.{6,}$'
+      - patterns:
+          - pattern: $OBJ->$PROP = "$SECRET";
+          - metavariable-regex:
+              metavariable: $PROP
+              regex: '(?i)^(password|passwd|secret|apikey|api_key|token|clientsecret|clientid)$'
+          - metavariable-regex:
+              metavariable: $SECRET
+              regex: '^.{6,}$'
+      - patterns:
+          - pattern: "[..., $KEY => \"$SECRET\", ...]"
+          - metavariable-regex:
+              metavariable: $KEY
+              regex: '(?i)^.(password|passwd|secret|apikey|api_key|token|clientsecret|clientid).$'
+          - metavariable-regex:
+              metavariable: $SECRET
+              regex: '^.{6,}$'
 
   - id: moodle-debug-ausgabe
     languages: [php]

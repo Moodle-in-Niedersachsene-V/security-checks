@@ -1,0 +1,371 @@
+{
+  "checked_at": "2026-10-06",
+  "scope": "14 öffentliche Vereinsplugins; Hauptbranch-Snapshots, keine Testbranches",
+  "method": "Physische Dateizeilen inklusive Kommentare/Leerzeilen/eingebetteter Sprachen; ausgeschlossen .git, vendor, node_modules, tests, test, lang, amd/build und *.min.js. Eingebundene Web-Anwendungen (MRBS) bleiben im Umfang. Keine bereinigten SLOC.",
+  "repositories": [
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_nextcloudbackup",
+      "commit": "63a0ca9589e03161e1d587cdb677f5c42b40dccb",
+      "counts": {
+        ".php": {
+          "files": 15,
+          "lines": 1531
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_kursfilter",
+      "commit": "ad60a3222fededea6aaad01724266aea728e49ba",
+      "counts": {
+        ".php": {
+          "files": 21,
+          "lines": 1909
+        },
+        ".js": {
+          "files": 1,
+          "lines": 450
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 1,
+          "lines": 108
+        },
+        ".css": {
+          "files": 1,
+          "lines": 118
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_easyadmin",
+      "commit": "492cabe8eeb23d755cb16c2e417f74bbdfe790be",
+      "counts": {
+        ".php": {
+          "files": 46,
+          "lines": 7114
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 2,
+          "lines": 159
+        },
+        ".css": {
+          "files": 1,
+          "lines": 275
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_calendarcategories",
+      "commit": "12879fd026de328f08f82ea2796f9b4678a3797a",
+      "counts": {
+        ".php": {
+          "files": 26,
+          "lines": 3780
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 1,
+          "lines": 635
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/mod_videolearn",
+      "commit": "c178113909d8abe09c127cb6c5dc114aa10272a6",
+      "counts": {
+        ".php": {
+          "files": 26,
+          "lines": 3680
+        },
+        ".js": {
+          "files": 3,
+          "lines": 1964
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 3,
+          "lines": 500
+        },
+        ".css": {
+          "files": 1,
+          "lines": 252
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_peertubeupload",
+      "commit": "ff10053f8299ce08f0602d42c3427b75600847d9",
+      "counts": {
+        ".php": {
+          "files": 8,
+          "lines": 1183
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_plugininfo",
+      "commit": "c785a842c6c280e9a95d12f43a8d6d1eafef97dd",
+      "counts": {
+        ".php": {
+          "files": 4,
+          "lines": 348
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/tiny_textgestaltung",
+      "commit": "7ade60983a2401b84ccfa42d0ecea865b5b00484",
+      "counts": {
+        ".php": {
+          "files": 6,
+          "lines": 475
+        },
+        ".js": {
+          "files": 5,
+          "lines": 385
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/repository_peertubeoauth",
+      "commit": "20f2dff51bba3fc67414c275df02fc01eb3d065a",
+      "counts": {
+        ".php": {
+          "files": 13,
+          "lines": 1984
+        },
+        ".js": {
+          "files": 1,
+          "lines": 289
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_mrbs_nds",
+      "commit": "5176bb5fdbef96eee4fbc332725b496564d36990",
+      "counts": {
+        ".php": {
+          "files": 40,
+          "lines": 9369
+        },
+        ".js": {
+          "files": 4,
+          "lines": 920
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 1,
+          "lines": 235
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_emailclient",
+      "commit": "4f34510313b760c7fa6c175995d8f5da0a00b75f",
+      "counts": {
+        ".php": {
+          "files": 35,
+          "lines": 4973
+        },
+        ".js": {
+          "files": 3,
+          "lines": 249
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 1,
+          "lines": 106
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/block_questionfilter",
+      "commit": "a7bcf379868cda395b85ab6176f97009f492ed9f",
+      "counts": {
+        ".php": {
+          "files": 12,
+          "lines": 2313
+        },
+        ".js": {
+          "files": 1,
+          "lines": 987
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 1,
+          "lines": 135
+        },
+        ".css": {
+          "files": 1,
+          "lines": 105
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/repository_nextclouddirect",
+      "commit": "2fd672b6e29b4d68a670bc271bdbdae78429f751",
+      "counts": {
+        ".php": {
+          "files": 6,
+          "lines": 1266
+        },
+        ".js": {
+          "files": 0,
+          "lines": 0
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 0,
+          "lines": 0
+        }
+      }
+    },
+    {
+      "repository": "Moodle-in-Niedersachsene-V/local_kursassistent",
+      "commit": "c66920bac2a66623311c8648da93fe49c4564b99",
+      "counts": {
+        ".php": {
+          "files": 25,
+          "lines": 6553
+        },
+        ".js": {
+          "files": 3,
+          "lines": 4429
+        },
+        ".ts": {
+          "files": 0,
+          "lines": 0
+        },
+        ".mustache": {
+          "files": 0,
+          "lines": 0
+        },
+        ".css": {
+          "files": 1,
+          "lines": 929
+        }
+      }
+    }
+  ]
+}

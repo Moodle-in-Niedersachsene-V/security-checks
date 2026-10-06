@@ -17,6 +17,7 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 | [Vorschlag für Betrieb und Wartbarkeit beim NLQ](docs/nlq-betrieb-und-wartbarkeit.md) | Betreuung, Übernahme, Supportzeitraum und Entscheidung über Weiterbetrieb, Nachbesserung oder Ablösung |
 | [Ergänzender Qualitätsablauf](docs/qualitaetsablauf-entwurf.md) | Ratsche, gemeinsame Gates, Coverage/CRAP und gezielte Mutation als Vorschläge zur wartbaren Entwicklung |
 | [Easy-Admin-Pilot und Größenvergleich](docs/pilots/easyadmin/README.md) | Neun ausgeführte Sicherheitstests, zwei wirksame Gegenproben und übernehmbarer Plugin-Patch |
+| [Pilotplanung für alle Vereinsplugins](docs/pilotplanung-verein.md) | Größen aller 14 Plugins, Funktionsvergleich und geplanter Prüfungsumfang für Kursfilter; keine neue Umsetzung |
 | [Kalibrierung an Moodle und etablierten Plugins](docs/research/moodle-pruefstandard-kalibrierung.md) | Offizielle Richtlinien und konkrete Testpraxis bei Attendance, Checklist und ObjectFS |
 | [Vereinsinventur](docs/research/verein-inventur.json) / [ByCS-Inventur](docs/research/bycs-inventory.json) | Maschinenlesbare Quellen, Commit-Stände und Prüfkonfigurationen |
 

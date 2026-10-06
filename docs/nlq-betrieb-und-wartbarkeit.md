@@ -28,6 +28,8 @@ Ein Einzelentwickler kann diese Nachweise mit einer vereinbarten Übernahme durc
 
 **Angebotsdauer:** Im Steckbrief ein konkretes Datum für die zugesagte Betreuung nennen. Weiterbetrieb vor dessen Ablauf anhand von Sicherheitsstand, Plattform-Support und Betreuung neu entscheiden. Kein pauschales Lebensalter für Plugins festlegen und aus erfolgreicher heutiger Prüfung keine unbegrenzte Wartungszusage ableiten. Moodle veröffentlicht seine Plattform-Supportzeiträume in der [Releaseübersicht](https://moodledev.io/general/releases); sie ersetzen keine eigene Plugin-Wartungszusage.
 
+Der [ergänzende Qualitätsablauf](qualitaetsablauf-entwurf.md) konkretisiert W3/W6 für die tägliche Entwicklung: reproduzierbare gemeinsame Prüfkommandos, klare Testzuordnung und Verbesserungen an geänderter Logik. Seine Einführung kann im Pilotprojekt erprobt werden; die Kandidaten sind noch keine zusätzliche NLQ-Aufnahmebedingung.
+
 ## Vorgeschlagene Betriebsentscheidungen
 
 | Ergebnis | Voraussetzung / Umgang |

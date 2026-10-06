@@ -15,6 +15,7 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 | [Moodle-Anforderungen](docs/research/moodle-anforderungen.md) | Aktueller Marketplace-Prozess, Guardians-Pause und Grenzen automatisierter Moodle-Checks |
 | [Prüfstandard – Entwurf v2](docs/pruefstandard-entwurf.md) | Vier Basisbereiche, funktionsabhängige Module und schlanke Nachweise |
 | [Vorschlag für Betrieb und Wartbarkeit beim NLQ](docs/nlq-betrieb-und-wartbarkeit.md) | Betreuung, Übernahme, Supportzeitraum und Entscheidung über Weiterbetrieb, Nachbesserung oder Ablösung |
+| [Ergänzender Qualitätsablauf](docs/qualitaetsablauf-entwurf.md) | Ratsche, gemeinsame Gates, Coverage/CRAP und gezielte Mutation als Vorschläge zur wartbaren Entwicklung |
 | [Kalibrierung an Moodle und etablierten Plugins](docs/research/moodle-pruefstandard-kalibrierung.md) | Offizielle Richtlinien und konkrete Testpraxis bei Attendance, Checklist und ObjectFS |
 | [Vereinsinventur](docs/research/verein-inventur.json) / [ByCS-Inventur](docs/research/bycs-inventory.json) | Maschinenlesbare Quellen, Commit-Stände und Prüfkonfigurationen |
 

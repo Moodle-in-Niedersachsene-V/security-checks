@@ -39,6 +39,8 @@ Review belegt die nachvollzogene Implementierung, ein ausgeführter Test das get
 
 Für MooGPT und das Dashboard gelten passende Schutzwirkungen ebenfalls, aber keine Moodle-spezifischen Lint-/Form-API-Vorgaben. Sie betreiben eigene Webschnittstellen und brauchen einen eigenen Nachweis. Bei Kurspilot native Linie und ältere externe/Mirror-Linie getrennt planen; Ergebnisse nicht auf andere Komponenten übertragen. grAIde bleibt ausgeschlossen.
 
+Für die Entwicklung ergänzt der [Qualitätsablauf-Entwurf](qualitaetsablauf-entwurf.md) B1 um diffbezogene Regeln, wirksame lokale Gates und gezielte Testhärtung. Die dortigen Metriken sind Wartungshilfen und fließen nicht als zusätzliche Sicherheitspunkte in den Prüfplan ein.
+
 ## Ergänzende Werkzeuge
 
 SAST, Secret-Scanning und Abhängigkeits-Audits können sinnvoll sein. Sie sind **keine jeweils zehn Pflichtpunkte** und keine allgemeine, hier belegte Moodle-Werkzeugpflicht. Fehlende Workflow-Zeilen beweisen auch nicht, dass Plattformscans oder interne Prüfungen fehlen.

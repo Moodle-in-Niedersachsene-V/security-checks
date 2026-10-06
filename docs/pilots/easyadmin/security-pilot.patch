@@ -1,0 +1,192 @@
+From 7137118a38396b9722b53c1b8cc498e827b5475c Mon Sep 17 00:00:00 2001
+From: root <root@moodle-dev.fritz.box>
+Date: Tue, 6 Oct 2026 09:21:31 +0200
+Subject: [PATCH] Add security regression pilot for backup access and account
+ retention
+
+---
+ .github/workflows/moodle-ci.yml |   9 +-
+ tests/security_test.php         | 140 ++++++++++++++++++++++++++++++++
+ 2 files changed, 147 insertions(+), 2 deletions(-)
+ create mode 100644 tests/security_test.php
+
+diff --git a/.github/workflows/moodle-ci.yml b/.github/workflows/moodle-ci.yml
+index a45102c..fa6a127 100644
+--- a/.github/workflows/moodle-ci.yml
++++ b/.github/workflows/moodle-ci.yml
+@@ -6,8 +6,8 @@
+ # Ablage: .github/workflows/moodle-ci.yml
+ #
+ # Angepasst: templates/ (Mustache) ist vorhanden, daher mit Mustache-Schritt.
+-# Kein amd/, daher ohne Grunt-Schritt. Kein tests/, daher ohne phpunit- und
+-# behat-Schritt.
++# Kein amd/, daher ohne Grunt-Schritt. Sicherheits-PHPUnit vorhanden;
++# keine Behat-Szenarien.
+ ##############################################################################
+ 
+ name: Moodle Plugin CI
+@@ -16,6 +16,7 @@ on:
+   push:
+     branches:
+       - main
++      - test/security-pilot-easyadmin
+   pull_request:
+   workflow_dispatch:
+ 
+@@ -119,3 +120,7 @@ jobs:
+       - name: Mustache-Templates pruefen
+         if: ${{ !cancelled() }}
+         run: moodle-plugin-ci mustache
++
++      - name: Sicherheitsregressionstests
++        if: ${{ !cancelled() }}
++        run: moodle-plugin-ci phpunit --fail-on-warning
+diff --git a/tests/security_test.php b/tests/security_test.php
+new file mode 100644
+index 0000000..355338d
+--- /dev/null
++++ b/tests/security_test.php
+@@ -0,0 +1,140 @@
++<?php
++// This file is part of Moodle - http://moodle.org/
++//
++// Moodle is free software: you can redistribute it and/or modify
++// it under the terms of the GNU General Public License as published by
++// the Free Software Foundation, either version 3 of the License, or
++// (at your option) any later version.
++//
++// Moodle is distributed in the hope that it will be useful,
++// but WITHOUT ANY WARRANTY; without even the implied warranty of
++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++// GNU General Public License for more details.
++//
++// You should have received a copy of the GNU General Public License
++// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
++
++namespace local_easyadmin;
++
++use advanced_testcase;
++use context_system;
++use required_capability_exception;
++use PHPUnit\Framework\Attributes\CoversClass;
++use PHPUnit\Framework\Attributes\CoversFunction;
++
++/**
++ * Regression tests for backup access and inactive account deletion.
++ *
++ * @package    local_easyadmin
++ * @copyright  2026 Moodle in Niedersachsen e. V.
++ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
++ */
++#[CoversFunction('local_easyadmin_pluginfile')]
++#[CoversFunction('local_easyadmin_get_inactive_users')]
++#[CoversClass(\local_easyadmin\task\cleanup_inactive_users::class)]
++final class security_test extends advanced_testcase {
++    /** Load the production library and isolate database changes. */
++    protected function setUp(): void {
++        global $CFG;
++        parent::setUp();
++        $this->resetAfterTest();
++        require_once($CFG->dirroot . '/local/easyadmin/lib.php');
++    }
++
++    /** File serving must reject a non-system context. */
++    public function test_file_rejects_course_context(): void {
++        $course = $this->getDataGenerator()->create_course();
++        $context = \context_course::instance($course->id);
++        $this->assertFalse(local_easyadmin_pluginfile(null, null, $context, 'backgroundimage', [0, 'absent.png'], false));
++    }
++
++    /** Unknown file areas must never be exposed. */
++    public function test_file_rejects_unknown_area(): void {
++        $this->setAdminUser();
++        $this->assertFalse(local_easyadmin_pluginfile(null, null, context_system::instance(), 'private', [0, 'absent'], false));
++    }
++
++    /** Intentional public image areas do not require an authenticated user. */
++    public function test_public_images_allow_anonymous_lookup(): void {
++        $this->setUser(0);
++        foreach (['backgroundimage', 'welcomepopupimage', 'loginpageimage', 'schooltileimage'] as $area) {
++            $this->assertFalse(local_easyadmin_pluginfile(null, null, context_system::instance(), $area, [0, 'absent.png'], false));
++        }
++    }
++
++    /** A logged-in ordinary user must not reach stored backup lookup. */
++    public function test_coursebackups_requires_managecourses(): void {
++        $this->setUser($this->getDataGenerator()->create_user());
++        $this->expectException(required_capability_exception::class);
++        local_easyadmin_pluginfile(null, null, context_system::instance(), 'coursebackups', [1, 'absent.mbz'], true);
++    }
++
++    /** ZIP exports must enforce the same capability as individual backups. */
++    public function test_coursebackupzip_requires_managecourses(): void {
++        $this->setUser($this->getDataGenerator()->create_user());
++        $this->expectException(required_capability_exception::class);
++        local_easyadmin_pluginfile(null, null, context_system::instance(), 'coursebackupzip', [1, 'absent.zip'], true);
++    }
++
++    /** The specific capability permits lookup without site administrator status. */
++    public function test_managecourses_allows_backup_lookup(): void {
++        $context = context_system::instance();
++        $user = $this->getDataGenerator()->create_user();
++        $role = $this->getDataGenerator()->create_role();
++        assign_capability('local/easyadmin:managecourses', CAP_ALLOW, $role, $context->id);
++        role_assign($role, $user->id, $context->id);
++        $this->setUser($user);
++        foreach (['coursebackups', 'coursebackupzip'] as $area) {
++            $this->assertFalse(local_easyadmin_pluginfile(null, null, $context, $area, [1, 'absent.mbz'], true));
++        }
++    }
++
++    /** New or recently active accounts, administrators and guests are excluded. */
++    public function test_inactive_candidates_protect_accounts(): void {
++        global $DB, $CFG;
++        $old = time() - 200 * DAYSECS;
++        $inactive = $this->getDataGenerator()->create_user(['timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => $old]);
++        $recent = $this->getDataGenerator()->create_user(['timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => time()]);
++        $new = $this->getDataGenerator()->create_user(['timecreated' => time(), 'firstaccess' => 0, 'lastaccess' => 0]);
++        $firstaccess = $this->getDataGenerator()->create_user(['timecreated' => $old, 'firstaccess' => time(), 'lastaccess' => 0]);
++        foreach ([(int) $CFG->siteguest, (int) get_admin()->id] as $id) {
++            $DB->update_record('user', (object) ['id' => $id, 'timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => $old]);
++        }
++        $candidates = local_easyadmin_get_inactive_users(90);
++        $this->assertArrayHasKey($inactive->id, $candidates);
++        foreach ([$recent->id, $new->id, $firstaccess->id, $CFG->siteguest, get_admin()->id] as $id) {
++            $this->assertArrayNotHasKey($id, $candidates);
++        }
++    }
++
++    /** A disabled cleanup must leave even old accounts untouched. */
++    public function test_disabled_cleanup_preserves_accounts(): void {
++        global $DB;
++        $old = time() - 200 * DAYSECS;
++        $user = $this->getDataGenerator()->create_user(['timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => $old]);
++        set_config('inactivedeletion_enabled', 0, 'local_easyadmin');
++        $this->expectOutputRegex('/deaktiviert/');
++        (new \local_easyadmin\task\cleanup_inactive_users())->execute();
++        $this->assertEquals(0, $DB->get_field('user', 'deleted', ['id' => $user->id]));
++    }
++
++    /** A dangerous configured threshold is clamped; protected accounts survive. */
++    public function test_cleanup_enforces_minimum_retention(): void {
++        global $DB, $CFG;
++        $old = time() - 200 * DAYSECS;
++        $lessold = time() - 40 * DAYSECS;
++        $inactive = $this->getDataGenerator()->create_user(['timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => $old]);
++        $recent = $this->getDataGenerator()->create_user(['timecreated' => $lessold, 'firstaccess' => $lessold, 'lastaccess' => $lessold]);
++        foreach ([(int) $CFG->siteguest, (int) get_admin()->id] as $id) {
++            $DB->update_record('user', (object) ['id' => $id, 'timecreated' => $old, 'firstaccess' => $old, 'lastaccess' => $old]);
++        }
++        set_config('inactivedeletion_enabled', 1, 'local_easyadmin');
++        set_config('inactivedeletion_days', 1, 'local_easyadmin');
++        $this->expectOutputRegex('/1 inaktive/');
++        (new \local_easyadmin\task\cleanup_inactive_users())->execute();
++        $this->assertEquals(1, $DB->get_field('user', 'deleted', ['id' => $inactive->id]));
++        foreach ([$recent->id, $CFG->siteguest, get_admin()->id] as $id) {
++            $this->assertEquals(0, $DB->get_field('user', 'deleted', ['id' => $id]));
++        }
++    }
++}
+-- 
+2.47.3
+

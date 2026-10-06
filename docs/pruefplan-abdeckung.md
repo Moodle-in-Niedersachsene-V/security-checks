@@ -18,6 +18,8 @@ Zähler/Nenner, Planversion und Commit gehören zum Wert. Ein Review wird nicht 
 
 Für die erfassten Projekte fehlt noch die vollständige Fallzuordnung nach diesem engeren Plan. Deshalb aktuell **kein neu berechneter Gesamtprozentwert**. Das bedeutet weder 0 % noch eine Sicherheitsabwertung. Die Tabelle hält die bereits erhobenen Nachweise fest; neue Tests wurden dafür nicht ausgeführt.
 
+Am 06.10.2026 wurde ein [begrenzter Easy-Admin-Pilot](pilots/easyadmin/README.md) tatsächlich ausgeführt: 9/9 benannte Fälle mit 23 Assertions erfolgreich; zwei kontrollierte Regressionen erkannt. Das gilt für den neuen lokalen Testbranch beziehungsweise den gesicherten Patch, nicht als Gesamtwert oder bereits übernommene Änderung des Plugin-Hauptbranches.
+
 ## Übersicht je Projekt
 
 | Projekt | Bereits belegte beziehungsweise gefundene Prüfungen | Nächster sinnvoller Nachweis |

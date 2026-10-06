@@ -1,0 +1,20 @@
+Moodle 5.1.8 (Build: 20261005)
+Php: 8.3.35, pgsql: 16.14 (Debian 16.14-1.pgdg13+1), OS: Linux 7.0.2-6-pve x86_64
+PHPUnit 11.5.55 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.35
+Configuration: /work/phpunit.xml
+
+........F                                                           9 / 9 (100%)
+
+Time: 00:01.182, Memory: 68.50 MB
+
+There was 1 failure:
+
+1) local_easyadmin\security_test::test_cleanup_enforces_minimum_retention
+Failed asserting that '1' matches expected 0.
+
+/work/public/local/easyadmin/tests/security_test.php:137
+
+FAILURES!
+Tests: 9, Assertions: 20, Failures: 1.

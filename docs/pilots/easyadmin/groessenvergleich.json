@@ -1,0 +1,37 @@
+[
+  {
+    "repository": "Moodle-in-Niedersachsene-V/local_easyadmin",
+    "commit": "492cabe8eeb23d755cb16c2e417f74bbdfe790be",
+    "scope": ".",
+    "php_files": 46,
+    "php_physical_lines": 7114
+  },
+  {
+    "repository": "Moodle-in-Niedersachsene-V/block_kursfilter",
+    "commit": "ad60a3222fededea6aaad01724266aea728e49ba",
+    "scope": ".",
+    "php_files": 21,
+    "php_physical_lines": 1909
+  },
+  {
+    "repository": "Moodle-in-Niedersachsene-V/local_calendarcategories",
+    "commit": "12879fd026de328f08f82ea2796f9b4678a3797a",
+    "scope": ".",
+    "php_files": 26,
+    "php_physical_lines": 3780
+  },
+  {
+    "repository": "Moodle-in-Niedersachsene-V/local_plugininfo",
+    "commit": "c785a842c6c280e9a95d12f43a8d6d1eafef97dd",
+    "scope": ".",
+    "php_files": 4,
+    "php_physical_lines": 348
+  },
+  {
+    "repository": "matthiasgruenwald/moodle-coursepilot",
+    "commit": "467c954508291a700215b6cb4c2940ac85d29db4",
+    "scope": "Plugin/src/local_coursepilot",
+    "php_files": 165,
+    "php_physical_lines": 36023
+  }
+]

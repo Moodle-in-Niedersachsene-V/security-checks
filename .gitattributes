@@ -1,0 +1,2 @@
+# Mail patches contain intentional context whitespace.
+docs/pilots/easyadmin/security-pilot.patch -whitespace

@@ -19,6 +19,7 @@ Dieses Repository sammelt und vergleicht die Sicherheitschecks der Projekte von 
 | [Easy-Admin-Pilot und Größenvergleich](docs/pilots/easyadmin/README.md) | Neun ausgeführte Sicherheitstests, zwei wirksame Gegenproben und übernehmbarer Plugin-Patch |
 | [Pilotplanung für alle Vereinsplugins](docs/pilotplanung-verein.md) | Größen aller 14 Plugins, Funktionsvergleich und geplanter Prüfungsumfang für Kursfilter; keine neue Umsetzung |
 | [Kalibrierung an Moodle und etablierten Plugins](docs/research/moodle-pruefstandard-kalibrierung.md) | Offizielle Richtlinien und konkrete Testpraxis bei Attendance, Checklist und ObjectFS |
+| [Coding Standards](coding-standards/CODING_STANDARDS.md) / [Quellenprüfung](coding-standards/quellen.md) | Mit den Vereinsentwicklern abgestimmte Review-Regeln (S, D, T, E, N, U, A, K), übernommen aus Kurspilot; Projekte verweisen hierauf |
 | [Vereinsinventur](docs/research/verein-inventur.json) / [ByCS-Inventur](docs/research/bycs-inventory.json) | Maschinenlesbare Quellen, Commit-Stände und Prüfkonfigurationen |
 
 Der erste Entwurf mit zehn gleich gewichteten Bereichen und Werten wie „35 % für AI Chat“ wurde nach der Moodle-Recherche zurückgezogen. Der überarbeitete Plan verlangt passende Schutzprüfungen und zusätzliche Werkzeuge nach Risiko. Neue Gesamtwerte werden erst anhand konkreter Fallpläne berechnet.
